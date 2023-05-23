@@ -60,4 +60,4 @@ fig_4 <- out %>%
 
 # ------------------------ save ------------------------
 
-ggsave("figures/fig-4.png", fig_4, dpi = 600, width = 5.5, height = 5)
+ggsave("figures/fig-4.png", fig_4, dpi = 600, width = 5.5, height = 3.75)

@@ -13,10 +13,13 @@ plan("multisession")
 
 swaters <- read_csv("data-clean/data-sw-clean.csv") %>% 
   mutate(
-    # replace BDL value with 0:
-    `Alkalinity, total_as CaCO3_mg/L` = replace_na(`Alkalinity, total_as CaCO3_mg/L`, 0),
     pH = coalesce(pH, `pH, lab`), 
     sulfate_mg_l = coalesce(`Sulfate_Dissolved_mg/L`, `Sulfate_Total_mg/L`)
+  ) %>% 
+  # remove rows (surface waters) containing missing values:
+  filter(
+    !is.na(`Magnesium_Total_mg/L`), 
+    !is.na(`Alkalinity, total_as CaCO3_mg/L`)
   )
 
 # ------------------------ functions ------------------------
@@ -31,6 +34,7 @@ add_dolomite <- function(river, q_dol, pco2, add_so4 = 0, db = phreeqc::phreeqc.
         Ca = `Calcium_Total_mg/L` / mass("Ca"),
         Cu = `Copper_Total_mg/L` / mass("Cu"),
         Fe = `Iron_Total_mg/L` / mass("Fe"),
+        Mg = `Magnesium_Total_mg/L` / mass("Mg"),
         Mn = `Manganese_Total_mg/L` / mass("Mn"),
         Na = `Sodium_Total_mg/L` / mass("Na"),
         pH = pH,
